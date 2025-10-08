@@ -1,0 +1,21 @@
+# System files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Temporary files
+*.tmp
+*.temp
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Markdown cheatsheet (keeping only HTML versions)
+default-credentials-cheatsheet.md

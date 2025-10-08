@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "Read(//opt/homebrew/Cellar/bbot/2.7.1/libexec/lib/python3.13/site-packages/bbot/modules/templates/**)",
+      "Bash(bbot:*)",
+      "Read(//Users/airb/.config/bbot/**)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:api.github.com)",
+      "WebSearch"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
