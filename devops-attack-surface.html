@@ -1096,6 +1096,12 @@
                         name: "Octopus Deploy",
                         description: "Automated deployment and release management. Contains production credentials.",
                         attackVectors: [
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2025-0589' target='_blank'>CVE-2025-0589</a> (CVSS 4.9) - <a href='https://www.intruder.io/research/octopus-deploy-cve-2025-0589' target='_blank'>Unauthenticated AD data exposure</a>",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2025-0539' target='_blank'>CVE-2025-0539</a> (CVSS 5.9) - SSRF with credential theft (Windows)",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2024-9194' target='_blank'>CVE-2024-9194</a> (CVSS 8.7) - <a href='https://advisories.octopus.com/post/2024/sa2024-09/' target='_blank'>Authenticated SQL injection in REST API</a>",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2024-2975' target='_blank'>CVE-2024-2975</a> (CVSS 8.8) - Race condition privilege escalation",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2024-12226' target='_blank'>CVE-2024-12226</a> (CVSS 4.9) - Sensitive variables in Kubernetes logs",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2021-31819' target='_blank'>CVE-2021-31819</a> - RCE via Halibut deserialization",
                             "API key extraction",
                             "Deployment target credential theft",
                             "Library variable sets with secrets",
@@ -1103,7 +1109,8 @@
                             "Project variable extraction",
                             "Tenant variable access",
                             "Deployment process manipulation",
-                            "Worker pool compromise"
+                            "Worker pool compromise",
+                            "Authenticated code execution via <a href='https://www.exploit-db.com/exploits/42083' target='_blank'>Metasploit module</a>"
                         ],
                         defaultCreds: "Admin account created during setup"
                     },
@@ -1166,6 +1173,10 @@
                         name: "Ansible",
                         description: "Agentless automation. Playbooks and vaults contain sensitive credentials.",
                         attackVectors: [
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2023-21769' target='_blank'>CVE-2023-21769</a> - Privilege escalation via tower OAuth2 token validation failure",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2024-0690' target='_blank'>CVE-2024-0690</a> - Information disclosure via ANSIBLE_NO_LOG bypass",
+                            "Template injection flaw removing unsafe designation",
+                            "Password leaking via tower_callback parameter",
                             "Ansible Vault cracking (if weak passwords)",
                             "Playbook extraction for hardcoded credentials",
                             "SSH private key discovery",
@@ -1173,26 +1184,34 @@
                             "Tower/AWX API credential theft",
                             "Become password extraction",
                             "Galaxy role poisoning",
-                            "Unencrypted variable files"
+                            "Unencrypted variable files",
+                            "Misconfigured servers leaving vulnerabilities"
                         ]
                     },
                     {
                         name: "Chef",
                         description: "Configuration management using Ruby. Cookbooks may contain secrets.",
                         attackVectors: [
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2023-42658' target='_blank'>CVE-2023-42658</a> - <a href='https://www.chef.io/blog/important-security-update-for-chef-customers' target='_blank'>Chef InSpec policy file code execution</a>",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2023-40050' target='_blank'>CVE-2023-40050</a> - Chef Automate malicious profile RCE",
                             "Chef Server API credential theft",
                             "Cookbook secret extraction",
                             "Data bag decryption (encrypted data bags)",
                             "Knife configuration files (~/.chef/knife.rb)",
                             "Node attribute enumeration",
                             "Chef Vault key compromise",
-                            "Validator key theft (validator.pem)"
+                            "Validator key theft (validator.pem)",
+                            "Malicious compliance profiles for arbitrary Ruby/shell command execution"
                         ]
                     },
                     {
                         name: "Puppet",
                         description: "Infrastructure automation platform. Masters control configuration of nodes.",
                         attackVectors: [
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2023-2530' target='_blank'>CVE-2023-2530</a> - Privilege escalation allowing RCE in orchestration service",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2023-5309' target='_blank'>CVE-2023-5309</a> - Broken SAML session management",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2023-5214' target='_blank'>CVE-2023-5214</a> - Puppet Bolt privilege escalation (< 3.27.4)",
+                            "Command execution as root via class parameters (2018.1.8-2023.8.3)",
                             "Puppet manifest credential extraction",
                             "Hiera data backend secrets",
                             "Certificate authority key theft",
@@ -1206,13 +1225,19 @@
                         name: "Salt",
                         description: "Event-driven automation. Master-minion architecture.",
                         attackVectors: [
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2025-22237' target='_blank'>CVE-2025-22237</a> (CVSS 6.7) - RCE via minion key access",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2025-22236' target='_blank'>CVE-2025-22236</a> - Minion event bus authorization bypass",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2024-38824' target='_blank'>CVE-2024-38824</a> (CVSS 9.6) - Directory traversal in recv_file",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2024-38825' target='_blank'>CVE-2024-38825</a> (CVSS 6.4) - Authentication bypass in salt.auth.pki",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2024-38822' target='_blank'>CVE-2024-38822</a> - Minion token validation skip allowing impersonation",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2020-11651' target='_blank'>CVE-2020-11651</a> (CVSS 10.0) - Auth bypass/RCE (CRITICAL)",
                             "Salt Master API authentication bypass",
                             "Pillar data extraction (secrets storage)",
                             "State file manipulation",
-                            "CVE exploitation (CVE-2020-11651/11652 - auth bypass/RCE)",
                             "Minion key compromise",
-                            "Event bus manipulation",
-                            "Grain data extraction"
+                            "Event bus manipulation and arbitrary event injection",
+                            "Grain data extraction",
+                            "Replay attacks without TLS (CVE-2024-38823)"
                         ]
                     },
                     {
@@ -1249,6 +1274,9 @@
                         name: "Splunk",
                         description: "Enterprise logging and SIEM. Logs may contain credentials and sensitive data.",
                         attackVectors: [
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2025-20229' target='_blank'>CVE-2025-20229</a> (CVSS 8.0) - <a href='https://advisory.splunk.com/advisories/SVD-2025-0301' target='_blank'>RCE via file upload</a> (versions < 9.3.3/9.2.5/9.1.8)",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2024-1205' target='_blank'>CVE-2024-1205</a> (CVSS 8.8) - <a href='https://advisory.splunk.com/advisories/SVD-2024-1205' target='_blank'>RCE via jsonpickle deserialization</a>",
+                            "SVD-2024-1003 (CVSS 8.8) - RCE via insecure session storage (Windows)",
                             "Default credentials (admin:changeme)",
                             "Search for credentials in logs",
                             "API token extraction",
@@ -1264,14 +1292,18 @@
                         name: "Elastic (ELK)",
                         description: "Elasticsearch, Logstash, Kibana. Logs and metrics, often sensitive data.",
                         attackVectors: [
-                            "Unauthenticated Elasticsearch access",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2024-37287' target='_blank'>CVE-2024-37287</a> - <a href='https://censys.com/cve-2024-37287/' target='_blank'>Kibana prototype tainting RCE</a> (ML/Alerting connectors)",
+                            "ESA-2024-17 - Type confusion RCE via Chromium in Kibana reporting",
+                            "Credentials/API keys in Kibana logs (fixed in 8.11.1)",
+                            "URL redirection to untrusted sites (open redirect & SSRF)",
+                            "Unauthenticated Elasticsearch access (no auth by default)",
                             "Index enumeration for sensitive data",
                             "API credential extraction",
-                            "Kibana CVE exploitation",
                             "Log injection attacks",
                             "Credential disclosure in logs",
                             "Search query for passwords/tokens",
-                            "Logstash config file secrets"
+                            "Logstash config file secrets",
+                            "User panel access to edit/delete/create users and API keys"
                         ],
                         defaultCreds: "elastic:changeme (X-Pack)"
                     },
@@ -1279,13 +1311,17 @@
                         name: "Grafana",
                         description: "Metrics visualization. Data source credentials and API keys.",
                         attackVectors: [
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2025-4123' target='_blank'>CVE-2025-4123</a> (CVSS 7.6) - <a href='https://medium.com/@Nightbloodz/grafana-cve-2025-4123-full-read-ssrf-account-takeover-d12abd13cd53' target='_blank'>XSS leading to full read SSRF</a> (with Image Renderer plugin)",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2025-6023' target='_blank'>CVE-2025-6023</a> (CVSS HIGH) - <a href='https://www.opswat.com/blog/grafana-cve-2025-6023-unit-515-discovers-incomplete-fix-that-leads-to-full-account-takeover' target='_blank'>XSS leading to account takeover</a>",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2024-9476' target='_blank'>CVE-2024-9476</a> - Privilege escalation via Grafana Cloud Migration Assistant",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2023-6152' target='_blank'>CVE-2023-6152</a> (CVSS 5.4) - Authentication bypass allowing email verification skip",
                             "Default credentials (admin:admin)",
-                            "CVE exploitation (path traversal, auth bypass)",
                             "Data source credential extraction",
                             "API key theft",
                             "Dashboard enumeration",
                             "Plugin vulnerabilities",
-                            "Unauthenticated access misconfiguration"
+                            "Unauthenticated access misconfiguration (anonymous access enabled)",
+                            "Cloud metadata exposure via SSRF (CVE-2025-4123)"
                         ],
                         defaultCreds: "admin:admin"
                     },
@@ -1343,12 +1379,16 @@
                         attackVectors: [
                             "Terraform state file extraction (terraform.tfstate)",
                             "State file contains cloud credentials, DB passwords, keys",
+                            "Hard-coded secrets in Terraform files (never store secrets in code)",
+                            "Sensitive data exposure in plan files",
                             "Backend credential theft (S3, Azure Storage, etc.)",
                             "Provider credential extraction",
                             "Variable file secrets (.tfvars)",
                             "Remote state backend compromise",
                             "Plan file analysis for sensitive data",
-                            "Module source manipulation"
+                            "Module source manipulation",
+                            "Scan with <a href='https://www.wiz.io/academy/terraform-security-best-practices' target='_blank'>Terrascan/KICS</a> for security issues",
+                            "Misconfigured infrastructure leading to <a href='https://www.sysdig.com/blog/terraform-security-best-practices' target='_blank'>compliance violations</a>"
                         ]
                     },
                     {
@@ -1398,6 +1438,14 @@
                         name: "HashiCorp Vault",
                         description: "Leading secrets management platform. Secures, stores, and controls access to tokens, passwords, certificates.",
                         attackVectors: [
+                            "<a href='https://thehackernews.com/2025/08/cyberark-and-hashicorp-flaws-enable.html' target='_blank'>Vault Fault</a> - 14 CVEs enabling <a href='https://cyata.ai/blog/cracking-the-vault-how-we-found-zero-day-flaws-in-authentication-identity-and-authorization-in-hashicorp-vault/' target='_blank'>remote vault takeover</a>",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2025-6000' target='_blank'>CVE-2025-6000</a> (CVSS 9.1) - Audit logging RCE via plugin directory",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2025-5999' target='_blank'>CVE-2025-5999</a> (CVSS 7.2) - Root policy normalization privilege escalation",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2025-6037' target='_blank'>CVE-2025-6037</a> - Certificate entity impersonation in non-CA mode",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2025-6003' target='_blank'>CVE-2025-6003</a> - MFA bypass with username_as_alias enabled",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2025-6004' target='_blank'>CVE-2025-6004</a> - Lockout bypass via username case permutations",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2024-5798' target='_blank'>CVE-2024-5798</a> - JWT auth method role-bound audience claims bypass",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2024-2660' target='_blank'>CVE-2024-2660</a> - TLS cert auth with non-CA certificate validation failure",
                             "Unseal key theft (if accessible)",
                             "Root token compromise",
                             "AppRole credentials extraction",
@@ -1407,7 +1455,8 @@
                             "Database credential leasing",
                             "KV secret enumeration",
                             "Policy exploitation for privilege escalation",
-                            "Unsealed Vault in dev mode"
+                            "Unsealed Vault in dev mode",
+                            "Username enumeration via timing/error messages (CVE-2025-6011, CVE-2025-6010)"
                         ]
                     },
                     {
