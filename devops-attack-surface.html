@@ -13,20 +13,20 @@
         }
 
         :root {
-            --primary: #1976d2;
-            --primary-dark: #1565c0;
-            --secondary: #424242;
-            --accent: #ff5252;
-            --success: #4caf50;
-            --warning: #ff9800;
-            --bg: #fafafa;
-            --card-bg: #ffffff;
-            --text: #212121;
-            --text-secondary: #757575;
-            --border: #e0e0e0;
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
-            --shadow-md: 0 4px 8px rgba(0,0,0,0.12);
-            --shadow-lg: 0 8px 16px rgba(0,0,0,0.15);
+            --primary: #4d65ff;
+            --primary-dark: #3d52cc;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --bg: #0f0a1e;
+            --card-bg: #1a1333;
+            --text: #e5e7eb;
+            --text-secondary: #9ca3af;
+            --border: #2d2347;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 8px rgba(0,0,0,0.4);
+            --shadow-lg: 0 8px 16px rgba(77,101,255,0.2);
         }
 
         body {
@@ -38,13 +38,13 @@
         }
 
         .header {
-            background: white;
+            background: var(--card-bg);
             border-bottom: 1px solid var(--border);
             padding: 24px 0;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-md);
         }
 
         .header-content {
@@ -73,12 +73,13 @@
         }
 
         .info-banner {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #4d65ff 0%, #8b5cf6 100%);
             color: white;
             padding: 24px;
             border-radius: 8px;
             margin-bottom: 32px;
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(77, 101, 255, 0.3);
         }
 
         .info-banner h2 {
@@ -104,11 +105,11 @@
         }
 
         .search-card {
-            background: white;
+            background: var(--card-bg);
             padding: 24px;
             border-radius: 8px;
             margin-bottom: 24px;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-md);
             border: 1px solid var(--border);
         }
 
@@ -122,12 +123,13 @@
             outline: none;
             transition: all 0.2s;
             background: var(--bg);
+            color: var(--text);
         }
 
         .search-box:focus {
             border-color: var(--primary);
-            background: white;
-            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+            background: var(--bg);
+            box-shadow: 0 0 0 3px rgba(77, 101, 255, 0.3);
         }
 
         .stats {
@@ -148,7 +150,7 @@
 
         .btn {
             padding: 10px 20px;
-            background: white;
+            background: var(--card-bg);
             color: var(--text);
             border: 1px solid var(--border);
             border-radius: 6px;
@@ -163,6 +165,7 @@
         .btn:hover {
             background: var(--bg);
             box-shadow: var(--shadow-md);
+            border-color: var(--primary);
         }
 
         .btn.primary {
@@ -177,11 +180,11 @@
         }
 
         .category {
-            background: white;
+            background: var(--card-bg);
             margin-bottom: 24px;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-md);
             border: 1px solid var(--border);
             transition: all 0.3s;
         }
@@ -191,7 +194,7 @@
         }
 
         .category-header {
-            background: white;
+            background: var(--card-bg);
             padding: 20px 24px;
             cursor: pointer;
             display: flex;
@@ -203,7 +206,7 @@
         }
 
         .category-header:hover {
-            background: var(--bg);
+            background: rgba(77, 101, 255, 0.1);
         }
 
         .category-title {
@@ -257,7 +260,7 @@
         .category-description {
             margin-bottom: 24px;
             padding: 16px;
-            background: white;
+            background: var(--card-bg);
             border-radius: 6px;
             font-size: 14px;
             color: var(--text-secondary);
@@ -272,7 +275,7 @@
         }
 
         .tool-card {
-            background: white;
+            background: rgba(26, 19, 51, 0.6);
             padding: 20px;
             border-radius: 6px;
             border: 1px solid var(--border);
@@ -285,8 +288,10 @@
         }
 
         .tool-card:hover {
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-lg);
             transform: translateY(-2px);
+            border-color: var(--primary);
+            background: rgba(77, 101, 255, 0.1);
         }
 
         .tool-card.expanded {
@@ -356,7 +361,7 @@
 
         .default-creds {
             display: none;
-            background: #fff3e0;
+            background: rgba(245, 158, 11, 0.15);
             padding: 12px 16px;
             border-radius: 6px;
             margin-top: 12px;
@@ -373,7 +378,7 @@
         }
 
         .warning-note {
-            background: #fff3cd;
+            background: rgba(245, 158, 11, 0.15);
             border-left: 3px solid var(--warning);
             padding: 16px 20px;
             border-radius: 6px;
@@ -386,11 +391,11 @@
         }
 
         .resources-section {
-            background: white;
+            background: var(--card-bg);
             padding: 24px;
             border-radius: 8px;
             margin-bottom: 24px;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-md);
             border: 1px solid var(--border);
         }
 
@@ -438,13 +443,13 @@
         }
 
         .footer {
-            background: white;
+            background: var(--card-bg);
             padding: 24px;
             border-radius: 8px;
             margin-top: 32px;
             text-align: center;
             color: var(--text-secondary);
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-md);
             border: 1px solid var(--border);
             font-size: 13px;
         }
