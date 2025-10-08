@@ -606,7 +606,14 @@
                         attackVectors: [
                             "Search for exposed credentials in documents",
                             "Enumerate user lists via API",
-                            "Exploit CVEs (e.g., CVE-2019-0604 for RCE)",
+                            "CVE-2025-53770 (CVSS 9.8) - Critical vulnerability in SharePoint Server",
+                            "CVE-2025-49706, CVE-2025-49704 - ToolShell vulnerabilities for RCE",
+                            "CVE-2023-29357 - JWT spoofing and privilege escalation",
+                            "CVE-2023-24955 - Remote code execution vulnerability",
+                            "CVE-2024-21318 - Authenticated remote code execution",
+                            "CVE-2019-0604 - Deserialization RCE in SharePoint",
+                            "Anonymous access misconfiguration - check guest access policies",
+                            "API misconfigurations allowing data exfiltration",
                             "Access control bypass via crafted URLs",
                             "Extract metadata from documents",
                             "Look for .aspx shells if write access obtained"
@@ -618,10 +625,16 @@
                         description: "Atlassian's wiki and collaboration platform. Treasure trove of architecture docs, passwords, and API keys.",
                         attackVectors: [
                             "Search for 'password', 'api key', 'secret', 'token' in content",
-                            "OGNL injection (CVE-2021-26084, CVE-2022-26134)",
-                            "Anonymous access misconfiguration",
+                            "CVE-2023-22527 (CVSS 10.0) - OGNL injection pre-auth RCE (CRITICAL)",
+                            "CVE-2023-22515 - Privilege escalation via anonymous access",
+                            "CVE-2022-26134 - OGNL injection RCE in Webwork",
+                            "CVE-2021-26084 - OGNL injection vulnerability",
+                            "Anonymous access misconfiguration - check space permissions",
+                            "Permission bypass via direct object references",
+                            "REST API enumeration without authentication",
                             "Extract attachments with credentials",
-                            "Enumerate users and groups",
+                            "Enumerate users and groups via /rest/api/user/search",
+                            "Exported space archives containing sensitive data",
                             "Webwork OGNL injection for RCE"
                         ],
                         defaultCreds: "admin:admin (old versions)"
@@ -631,11 +644,15 @@
                         description: "Open-source wiki software. Can expose sensitive internal documentation.",
                         attackVectors: [
                             "Check Special:Version for software versions",
-                            "Enumerate users via API",
+                            "Enumerate users via API (api.php?action=query&list=allusers)",
                             "Search page history for removed secrets",
-                            "File upload restrictions bypass",
-                            "SQL injection in older versions",
-                            "Access restrictions bypass"
+                            "XSS vulnerabilities in various extensions and core",
+                            "Permission bypass via special page access",
+                            "File upload restrictions bypass - check for SVG, HTML uploads",
+                            "SQL injection in older versions (pre-1.19)",
+                            "Access restrictions bypass via direct file access",
+                            "API abuse for content enumeration",
+                            "Extension vulnerabilities (check installed extensions)"
                         ],
                         defaultCreds: "Check for weak admin passwords"
                     },
@@ -643,12 +660,15 @@
                         name: "DokuWiki",
                         description: "Simple wiki system. Often misconfigured with public access.",
                         attackVectors: [
+                            "CVE-2024-42758 - XSS vulnerability in indexmenu plugin",
+                            "Stored XSS via SVG file uploads",
                             "Directory traversal vulnerabilities",
-                            "Arbitrary file disclosure",
-                            "Authentication bypass",
-                            "Check data/pages/ for raw wiki content",
-                            "ACL misconfiguration",
-                            "Plugin vulnerabilities"
+                            "Arbitrary file disclosure via ../../../ in URLs",
+                            "Authentication bypass in older versions",
+                            "Check data/pages/ for raw wiki content if exposed",
+                            "ACL misconfiguration - default world-readable pages",
+                            "Plugin vulnerabilities (100+ plugins available)",
+                            "Remote file inclusion in templates"
                         ],
                         defaultCreds: "Initial setup may have weak passwords"
                     },
@@ -667,22 +687,31 @@
                         name: "TikiWiki",
                         description: "Full-featured wiki and CMS. Complex with many features and attack surfaces.",
                         attackVectors: [
-                            "File upload vulnerabilities",
-                            "SQL injection (historical issues)",
-                            "Authentication bypass",
-                            "XSS in various modules",
-                            "Shell upload via file gallery"
+                            "CVE-2020-15906 (CVSS 9.3) - Authentication bypass vulnerability",
+                            "File upload vulnerabilities leading to RCE",
+                            "Unrestricted file upload via file gallery",
+                            "SQL injection (historical issues in search and filters)",
+                            "Authentication bypass via parameter manipulation",
+                            "XSS in various modules (wiki pages, forums, blogs)",
+                            "CSRF leading to code execution",
+                            "PHP code injection via template system",
+                            "Shell upload via file gallery with .php/.phtml extensions"
                         ]
                     },
                     {
                         name: "Wiki.js",
                         description: "Modern, lightweight wiki built on Node.js. Growing in popularity.",
                         attackVectors: [
-                            "GraphQL API enumeration",
-                            "JWT token manipulation",
-                            "Check for exposed GraphQL playground",
-                            "Authentication bypass via API",
-                            "File upload vulnerabilities"
+                            "CVE-2024-34710 - Client-side template injection vulnerability",
+                            "CVE-2022-23654 - Path prediction leading to RCE",
+                            "CVE-2022-1681 - Authentication bypass vulnerability",
+                            "GraphQL API enumeration via /graphql endpoint",
+                            "JWT token manipulation and signature bypass",
+                            "Check for exposed GraphQL playground at /graphql",
+                            "Authentication bypass via API direct access",
+                            "File upload vulnerabilities in asset management",
+                            "Server-side template injection in Markdown renderer",
+                            "Authorization bypass via GraphQL mutations"
                         ],
                         defaultCreds: "admin@example.com:admin (initial setup)"
                     }
