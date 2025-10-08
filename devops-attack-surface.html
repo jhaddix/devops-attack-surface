@@ -788,13 +788,18 @@
                         name: "Git",
                         description: "Distributed version control. Exposed .git directories are a goldmine.",
                         attackVectors: [
-                            "Exposed .git directories (/.git/)",
-                            "GitDumper / git-dumper for extraction",
+                            "Exposed .git directories (/.git/) - check for 403 vs 404",
+                            "git-dumper for recursive .git extraction (10x faster than original)",
+                            "GitHacker - complete repo restoration including stash and tags",
                             "Search commit history for secrets (git log -p)",
-                            "Check .git/config for remote URLs with credentials",
-                            "Extract credentials from reflog",
-                            "Search for removed secrets in history",
-                            "truffleHog / GitLeaks for secret scanning"
+                            "Check .git/config for remote URLs with hardcoded credentials",
+                            "Extract credentials from reflog and stash",
+                            "Search for removed secrets in commit history",
+                            "truffleHog / GitLeaks / Gitleaks for secret scanning",
+                            "API keys, AWS keys, passwords in commit messages",
+                            "Developer emails and usernames from git log",
+                            "Static code analysis on extracted source",
+                            "Forced browsing with dirsearch/dirb to find .git"
                         ]
                     },
                     {
@@ -803,7 +808,13 @@
                         attackVectors: [
                             "GitHub dorking for exposed credentials",
                             "Enumerate repositories via API",
-                            "GitHub Actions secrets extraction (if write access)",
+                            "GitHub Actions pull_request_target misconfiguration - execute untrusted code",
+                            "GitHub Actions workflow_run privilege escalation",
+                            "Script injection via unsanitized PR/issue data in workflows",
+                            "Secrets exfiltration via workflow manipulation",
+                            "Artifact poisoning during workflow transfers",
+                            "Self-hosted runner compromise",
+                            "GITHUB_TOKEN abuse for lateral movement",
                             "Personal Access Token (PAT) abuse",
                             "SSH key extraction from commits",
                             "GitHub Pages misconfigurations",
@@ -816,14 +827,21 @@
                         name: "GitLab",
                         description: "Self-hosted Git platform with CI/CD. Often contains sensitive CI variables.",
                         attackVectors: [
-                            "CVE exploitation (RCE vulnerabilities common)",
-                            "CI/CD variable extraction",
+                            "CVE-2025-25291 & CVE-2025-25292 (CRITICAL) - SAML authentication bypass",
+                            "CVE-2025-27407 (CVSS 9.0) - RCE via Ruby graphql library",
+                            "CVE-2024-6385 - Authentication bypass vulnerability",
+                            "CVE-2023-7028 - Account takeover vulnerability",
+                            "CVE-2022-2884 - Authenticated RCE via GitHub import API",
+                            "CVE-2021-22205 (CVSS 10.0) - Pre-auth RCE via ExifTool",
+                            "CI/CD variable extraction from .gitlab-ci.yml",
                             "API token enumeration",
                             "Repository enumeration",
                             "GitLab Runner token abuse",
                             "SSRF via import features",
-                            "Arbitrary file read (CVE-2021-22205)",
-                            "Container registry access"
+                            "Arbitrary file read vulnerabilities",
+                            "Container registry credential theft",
+                            "Pipeline secrets extraction",
+                            "Job artifacts containing secrets"
                         ],
                         defaultCreds: "root:password (initial setup)"
                     },
@@ -831,24 +849,31 @@
                         name: "Bitbucket",
                         description: "Atlassian's Git solution. Integrated with Jira and other Atlassian products.",
                         attackVectors: [
-                            "CVE exploitation (various RCE)",
+                            "CVE-2022-36804 (CVSS 9.8) - Command injection via git --exec argument",
+                            "CVE-2022-43401 (CRITICAL) - Command injection via username manipulation",
+                            "CVE-2024-38819 (CVSS 7.5) - Path traversal via Spring WebMVC",
+                            "Servlet filter bypass (pre-auth) - affects versions before 7.6.16",
+                            "Command injection in API endpoints (requires read access)",
                             "API key extraction",
                             "Repository enumeration",
                             "Pipeline variable extraction",
-                            "SSH key harvesting",
-                            "Webhook manipulation",
-                            "Branch permission bypass"
+                            "SSH key harvesting from commits",
+                            "Webhook manipulation for data exfiltration",
+                            "Branch permission bypass",
+                            "Public repository access abuse"
                         ]
                     },
                     {
                         name: "Subversion (SVN)",
                         description: "Centralized version control. Less common but still used in legacy systems.",
                         attackVectors: [
+                            "CVE-2024-45720 (CVSS 8.2) - Windows command injection via character encoding",
                             "Exposed .svn directories",
                             "SVN enumeration tools (svn-extractor)",
                             "Unauthenticated repository access",
                             "Commit log analysis for secrets",
-                            "WebDAV vulnerabilities if exposed"
+                            "WebDAV vulnerabilities if exposed via mod_dav_svn",
+                            "Filename control character validation bypass"
                         ]
                     },
                     {
@@ -865,13 +890,19 @@
                         name: "Azure DevOps Server",
                         description: "Microsoft's DevOps platform. Includes repos, pipelines, artifacts.",
                         attackVectors: [
+                            "CVE-2025-29813 (CVSS 10.0) - Privilege escalation over network (CRITICAL)",
+                            "CVE-2024-20667 - RCE with Queue Build permissions in pipelines",
+                            "CVE-2023-36561 - Pipeline secrets and elevated permissions access",
+                            "SSRF vulnerabilities including CRLF injection and DNS rebinding",
+                            "Azure Service Tags firewall bypass",
                             "Personal Access Token (PAT) abuse",
                             "Pipeline secrets extraction",
-                            "Service connection credentials",
+                            "Service connection credentials theft",
                             "API enumeration",
                             "Build variable extraction",
                             "Azure DevOps Services API abuse",
-                            "Repository enumeration"
+                            "Repository enumeration",
+                            "Zero-click CI/CD vulnerabilities"
                         ]
                     }
                 ]
