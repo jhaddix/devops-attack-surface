@@ -727,12 +727,19 @@
                         description: "Atlassian's issue tracking and project management. Gold mine for credentials, API keys, and internal info.",
                         attackVectors: [
                             "Search for 'password', 'credentials', 'token', 'api key' in tickets",
-                            "User enumeration via REST API",
-                            "SSRF vulnerabilities (CVE-2019-8449)",
+                            "CVE-2023-22501 (CVSS 9.4) - Authentication bypass in Jira Service Management",
+                            "CVE-2023-22523 - RCE in Assets Discovery agent",
+                            "CVE-2019-8451 - SSRF in Gadgets Servlet",
+                            "CVE-2019-8449 - User enumeration via GroupUserPicker API",
+                            "Template injection RCE at /secure/ContactAdministrators!default.jspa",
+                            "Dashboard/filter permission misconfiguration - check for public visibility",
+                            "User enumeration via /secure/ViewUserHover.jspa",
                             "Information disclosure via /secure/Dashboard.jspa",
-                            "CVE exploitation (check for outdated versions)",
+                            "User picker disclosure at /secure/popups/UserPickerBrowser.jspa",
+                            "Public filters at /secure/ManageFilters.jspa?filterView=popular",
                             "Extract attachments with secrets",
-                            "JQL injection for data extraction"
+                            "JQL injection for data extraction",
+                            "SSRF in OAuth plugin and Mobile Plugin"
                         ],
                         defaultCreds: "admin:admin (fresh installs)"
                     },
@@ -740,24 +747,33 @@
                         name: "Trello",
                         description: "Kanban-style project management. Often has public boards with sensitive info.",
                         attackVectors: [
-                            "Enumerate public boards via company name",
+                            "2024 API breach - Unsecured REST API exposed 15M users",
+                            "Unauthenticated API enumeration - board discovery via email",
+                            "XSS vulnerability (OBB-593048) in trello.com",
+                            "Improper access control (OBB-632913)",
+                            "Enumerate public boards via company name using Google dorking",
                             "API key extraction from browser/mobile apps",
                             "OAuth token theft",
-                            "Public board information disclosure",
-                            "Search for credentials in card descriptions",
-                            "Webhook manipulation"
+                            "Public board information disclosure - check board visibility settings",
+                            "Search for credentials in card descriptions and attachments",
+                            "Webhook manipulation for data exfiltration",
+                            "API abuse for user email to username association"
                         ]
                     },
                     {
                         name: "Redmine",
                         description: "Open-source project management. Can contain sensitive project data.",
                         attackVectors: [
+                            "CVE-2023-47259, CVE-2023-47260, CVE-2023-47258 - XSS vulnerabilities",
+                            "CVE-2022-44637 - Persistent XSS in Textile formatter",
+                            "CVE-2022-44030 - File download permission bypass (any Issue/Wiki attachment)",
+                            "CVE-2019-18890 - SQL injection in older versions (pre-3.3.10)",
+                            "File upload bypass - circumvent allowed filename extensions",
+                            "XSS via thumbnails, Textile formatter, and Markdown formatter",
                             "Default credentials on fresh installs",
-                            "CVE exploitation (various RCE and auth bypass)",
-                            "API key enumeration",
-                            "Repository browser for code access",
-                            "File upload vulnerabilities",
-                            "SQL injection in older versions"
+                            "API key enumeration via /users.json",
+                            "Repository browser for code access without auth",
+                            "Insufficient permission checks on attachments"
                         ],
                         defaultCreds: "admin:admin"
                     }
