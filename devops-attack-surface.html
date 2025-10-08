@@ -986,15 +986,21 @@
                         description: "Most popular CI/CD server. Highly extensible, often misconfigured. High-value target.",
                         attackVectors: [
                             "Unauthenticated access (no security configured)",
-                            "Script console RCE (if authenticated)",
-                            "Groovy script injection",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2024-23897' target='_blank'>CVE-2024-23897</a> (CVSS 9.8) - <a href='https://www.jenkins.io/security/advisory/2024-01-24/' target='_blank'>Arbitrary file leak to RCE</a>",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2024-23898' target='_blank'>CVE-2024-23898</a> - WebSocket hijacking (CSWSH)",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2024-43044' target='_blank'>CVE-2024-43044</a> - RCE in Jenkins agents",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2025-53652' target='_blank'>CVE-2025-53652</a> - RCE affecting 15k+ servers with security off",
+                            "Script console RCE (if authenticated) - <a href='https://blog.pentesteracademy.com/abusing-jenkins-groovy-script-console-to-get-shell-98b951fa64a6' target='_blank'>Groovy reverse shells</a>",
+                            "Groovy script injection via /script endpoint",
+                            "Allow users to sign up misconfiguration",
+                            "Anonymous read permission misconfiguration",
                             "Credentials plugin extraction",
                             "Build job manipulation",
                             "Pipeline code injection",
                             "Plugin vulnerabilities (1000+ plugins)",
-                            "CVE exploitation (numerous RCE CVEs)",
                             "Stored credentials in build configs",
-                            "Agent/node compromise"
+                            "Agent/node compromise",
+                            "Cryptocurrency mining via <a href='https://thehackernews.com/2024/07/hackers-exploiting-jenkins-script.html' target='_blank'>Groovy plugin misconfigurations</a>"
                         ],
                         defaultCreds: "admin:admin or no auth"
                     },
@@ -1002,13 +1008,17 @@
                         name: "CircleCI",
                         description: "Cloud-based CI/CD. Environment variables often contain secrets.",
                         attackVectors: [
+                            "<a href='https://circleci.com/blog/jan-4-2023-incident-report/' target='_blank'>2023 Security Breach</a> - Session token theft via malware (Dec 2022-Jan 2023)",
+                            "Environment variables, keys, tokens exfiltrated in breach",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2021-41077' target='_blank'>CVE-2021-41077</a> - Secret data exposure (Sept 2021)",
                             "Environment variable extraction via API",
-                            "API token abuse",
+                            "API token abuse (770M+ logs exposed in 2022)",
                             "Context secrets extraction",
                             "SSH key theft from builds",
                             "Workflow manipulation",
-                            "Org-level token compromise",
-                            "Project-level secrets access"
+                            "Org-level token compromise (2FA-backed SSO session stolen)",
+                            "Project-level secrets access",
+                            "Hard-coded secrets in build logs"
                         ]
                     },
                     {
@@ -1043,13 +1053,18 @@
                         name: "TeamCity",
                         description: "JetBrains CI/CD server. Often used in enterprise environments.",
                         attackVectors: [
-                            "CVE exploitation (auth bypass, RCE)",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2024-27198' target='_blank'>CVE-2024-27198</a> (CVSS 9.8) - <a href='https://www.rapid7.com/blog/post/2024/03/04/etr-cve-2024-27198-and-cve-2024-27199-jetbrains-teamcity-multiple-authentication-bypass-vulnerabilities-fixed/' target='_blank'>Auth bypass to RCE</a> (CISA KEV)",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2024-27199' target='_blank'>CVE-2024-27199</a> (CVSS 7.3) - Path traversal auth bypass",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2024-23917' target='_blank'>CVE-2024-23917</a> - Auth bypass to RCE (before 2023.11.3)",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2023-42793' target='_blank'>CVE-2023-42793</a> - Unauthenticated RCE (CISA KEV, <a href='https://www.trendmicro.com/en_us/research/24/c/teamcity-vulnerability-exploits-lead-to-jasmin-ransomware.html' target='_blank'>Jasmin ransomware</a>)",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2025-46618' target='_blank'>CVE-2025-46618</a> - Stored XSS in Data Directory tab",
                             "Build configuration credential theft",
                             "Agent compromise",
                             "Build step injection",
                             "Server-wide settings access",
                             "VCS root credentials",
-                            "Plugin vulnerabilities"
+                            "Plugin vulnerabilities",
+                            "HTTPS certificate replacement via CVE-2024-27199"
                         ],
                         defaultCreds: "Check for initial setup tokens"
                     },
@@ -1057,13 +1072,16 @@
                         name: "Bamboo",
                         description: "Atlassian's CI/CD server. Integrates with Jira and Bitbucket.",
                         attackVectors: [
-                            "CVE exploitation",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2024-1597' target='_blank'>CVE-2024-1597</a> (CVSS 10.0) - <a href='https://www.securityweek.com/atlassian-patches-critical-vulnerability-in-bamboo-data-center-and-server/' target='_blank'>SQL injection in PostgreSQL dependency</a>",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2023-22506' target='_blank'>CVE-2023-22506</a> (CVSS 7.5) - Injection and RCE (versions < 9.2.3, 9.3.1)",
+                            "<a href='https://nvd.nist.gov/vuln/detail/CVE-2023-46604' target='_blank'>CVE-2023-46604</a> - Apache ActiveMQ RCE affecting Bamboo",
                             "Build plan manipulation",
                             "Credentials extraction from plans",
                             "Remote agent compromise",
                             "Deployment project manipulation",
                             "REST API abuse",
-                            "Variable extraction"
+                            "Variable extraction",
+                            "Authenticated attacker system call modification"
                         ],
                         defaultCreds: "admin:admin (initial)"
                     }
