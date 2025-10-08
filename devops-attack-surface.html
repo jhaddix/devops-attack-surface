@@ -497,7 +497,7 @@
 <body>
     <div class="header">
         <div class="header-content">
-            <h1>🎯 DevOps Pipeline Attack Surface</h1>
+            <h1> DevOps Pipeline Attack Surface</h1>
             <p>Interactive reference guide for penetration testing DevOps environments</p>
         </div>
     </div>
@@ -512,17 +512,17 @@
                 maintaining operational security.
             </p>
             <div class="credits">
-                <strong>Credits:</strong> Big love to <strong>Tom and Colbert from Accenture (formerly FusionX)</strong> for chopping game about this! 🙌
+                <strong>Credits:</strong> Big love to <strong>Tom and Colbert from Accenture (formerly FusionX)</strong> for chopping game about this! 
             </div>
         </div>
 
         <div class="warning-note">
-            <strong>⚠️ Authorized Security Testing Only</strong> - This guide is for authorized penetration testing and security assessments.
+            <strong> Authorized Security Testing Only</strong> - This guide is for authorized penetration testing and security assessments.
             Attacking DevOps pipelines without authorization is illegal and can cause significant business disruption.
         </div>
 
         <div class="search-card">
-            <input type="text" id="searchBox" class="search-box" placeholder="🔍 Search tools, attack vectors, or categories...">
+            <input type="text" id="searchBox" class="search-box" placeholder=" Search tools, attack vectors, or categories...">
             <div class="stats">
                 <span id="visibleCount">Loading...</span>
                 <span>•</span>
@@ -542,7 +542,7 @@
         <div id="categories"></div>
 
         <div class="resources-section">
-            <h3>📖 Course Overview & Agenda</h3>
+            <h3> Course Overview & Agenda</h3>
 
             <h4>Day 1: Discovery & CI/CD Attacks</h4>
             <ul>
@@ -562,14 +562,14 @@
                 <li>Tactics Against Secrets Management Platforms</li>
             </ul>
 
-            <h4>🎯 Key Takeaways</h4>
+            <h4> Key Takeaways</h4>
             <ul>
                 <li><strong>New Attack Surface Perspective:</strong> Understanding DevOps & CI/CD pipelines from offensive and defensive viewpoints</li>
                 <li><strong>Targeted Reconnaissance:</strong> OPSEC-conscious privilege escalation, lateral movement, and RCE techniques</li>
                 <li><strong>Modern Red Teaming:</strong> No-install, browser-based attacks that focus on business logic abuse vs. implants/EDR bypasses</li>
             </ul>
 
-            <h4>👥 Target Audience</h4>
+            <h4> Target Audience</h4>
             <p><strong>Beginner/Intermediate Level</strong> - Offensive and defensive security practitioners:</p>
             <ul style="columns: 2; -webkit-columns: 2; -moz-columns: 2;">
                 <li>Red Team Operators</li>
@@ -582,12 +582,12 @@
                 <li>SREs & Cloud Admins</li>
             </ul>
 
-            <h4>📚 Additional Resources</h4>
+            <h4> Additional Resources</h4>
             <ul>
-                <li>🔗 <a href="https://owasp.org/www-project-devsecops-guideline/" target="_blank">OWASP DevSecOps Guidelines</a></li>
-                <li>🔗 <a href="https://github.com/TupleType/DevOops" target="_blank">DevOops - DevOps Security Testing Framework</a></li>
-                <li>🔗 <a href="https://www.cidersecurity.io/top-10-ci-cd-security-risks/" target="_blank">Top 10 CI/CD Security Risks</a></li>
-                <li>🔗 <a href="https://github.com/hahwul/DevSecOps" target="_blank">DevSecOps Resources Collection</a></li>
+                <li> <a href="https://owasp.org/www-project-devsecops-guideline/" target="_blank">OWASP DevSecOps Guidelines</a></li>
+                <li> <a href="https://github.com/TupleType/DevOops" target="_blank">DevOops - DevOps Security Testing Framework</a></li>
+                <li> <a href="https://www.cidersecurity.io/top-10-ci-cd-security-risks/" target="_blank">Top 10 CI/CD Security Risks</a></li>
+                <li> <a href="https://github.com/hahwul/DevSecOps" target="_blank">DevSecOps Resources Collection</a></li>
             </ul>
         </div>
 
@@ -603,7 +603,7 @@
         const devOpsTools = [
             {
                 category: "Knowledge Bases",
-                icon: "📚",
+                icon: "",
                 description: "Documentation and knowledge management platforms often containing sensitive information, credentials, and architecture details.",
                 tools: [
                     {
@@ -696,7 +696,7 @@
             },
             {
                 category: "Dev & Project Management",
-                icon: "📋",
+                icon: "",
                 description: "Project tracking and management tools containing sprint info, user stories, and often credentials in tickets.",
                 tools: [
                     {
@@ -742,7 +742,7 @@
             },
             {
                 category: "Source Code Management (SCM)",
-                icon: "🔀",
+                icon: "",
                 description: "Version control systems - the crown jewels. Source code, commit history, and often hardcoded secrets.",
                 tools: [
                     {
@@ -839,7 +839,7 @@
             },
             {
                 category: "Repository Management",
-                icon: "📦",
+                icon: "",
                 description: "Artifact and package repositories. Can contain backdoored packages, credentials, and sensitive binaries.",
                 tools: [
                     {
@@ -898,7 +898,7 @@
             },
             {
                 category: "Build Servers",
-                icon: "🏗️",
+                icon: "",
                 description: "CI/CD build platforms. Critical targets - compromise here = code execution in production pipeline.",
                 tools: [
                     {
@@ -991,7 +991,7 @@
             },
             {
                 category: "Deployment Platforms",
-                icon: "🚀",
+                icon: "",
                 description: "Deployment and release management platforms. Production deployment credentials often stored here.",
                 tools: [
                     {
@@ -1061,7 +1061,7 @@
             },
             {
                 category: "Configuration Management",
-                icon: "⚙️",
+                icon: "",
                 description: "Infrastructure as Code and config management. Contains server credentials, SSH keys, and secrets.",
                 tools: [
                     {
@@ -1144,7 +1144,7 @@
             },
             {
                 category: "Operations & Monitoring",
-                icon: "📊",
+                icon: "",
                 description: "Monitoring and logging platforms. Can reveal system architecture, vulnerabilities, and sometimes credentials in logs.",
                 tools: [
                     {
@@ -1236,7 +1236,7 @@
             },
             {
                 category: "Infrastructure as Code (IaC)",
-                icon: "🏗️",
+                icon: "",
                 description: "IaC platforms define cloud infrastructure. State files and configs often contain sensitive credentials and architecture.",
                 tools: [
                     {
@@ -1293,7 +1293,7 @@
             },
             {
                 category: "Secrets Managers",
-                icon: "🔐",
+                icon: "",
                 description: "Centralized secrets management. The ultimate prize - compromise here = access to all stored credentials.",
                 tools: [
                     {
@@ -1430,7 +1430,7 @@
                 const toolsHTML = cat.tools.map(tool => {
                     const attackVectorsHTML = tool.attackVectors ? `
                         <div class="attack-vectors">
-                            <h4>🎯 Attack Vectors</h4>
+                            <h4> Attack Vectors</h4>
                             <ul>
                                 ${tool.attackVectors.map(v => `<li>${v}</li>`).join('')}
                             </ul>
@@ -1439,7 +1439,7 @@
 
                     const defaultCredsHTML = tool.defaultCreds ? `
                         <div class="default-creds">
-                            <strong>🔑 Default Credentials:</strong> ${tool.defaultCreds}
+                            <strong> Default Credentials:</strong> ${tool.defaultCreds}
                         </div>
                     ` : '';
 
@@ -1460,7 +1460,7 @@
                             <h2>${cat.category}</h2>
                             <span class="tool-count">${cat.tools.length} tools</span>
                         </div>
-                        <span class="toggle-icon">▼</span>
+                        <span class="toggle-icon"></span>
                     </div>
                     <div class="category-content">
                         <div class="category-description">${cat.description}</div>
