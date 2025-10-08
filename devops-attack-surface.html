@@ -921,14 +921,20 @@
                         name: "Artifactory",
                         description: "JFrog's universal artifact repository. Stores builds, dependencies, Docker images.",
                         attackVectors: [
-                            "Anonymous repository browsing",
-                            "API key extraction",
+                            "CVE-2022-0668 (CVSS 9.8) - Authentication bypass leading to privilege escalation",
+                            "Insecure deserialization RCE (versions < 7.36.1/6.23.41)",
+                            "Arbitrary file write leading to RCE (versions < 7.76.2)",
+                            "CVE-2019-19937 - SSRF vulnerability",
+                            "Zip Slip vulnerability - arbitrary file write via archive extraction",
+                            "Anonymous access misconfiguration - check admin panel settings",
+                            "Anonymous deploy access - test with curl deploy=true",
+                            "API key extraction from environment variables",
                             "Default credentials (admin:password)",
-                            "CVE exploitation (various RCE)",
                             "Docker registry credential theft",
                             "Artifact upload for supply chain attacks",
-                            "Repository enumeration",
-                            "Backup file access (.backup files)"
+                            "Repository enumeration without authentication",
+                            "Backup file access (.backup files)",
+                            "Proprietary software artifact download from exposed instances"
                         ],
                         defaultCreds: "admin:password"
                     },
@@ -936,14 +942,22 @@
                         name: "Nexus",
                         description: "Sonatype's repository manager. Manages Maven, npm, Docker, and more.",
                         attackVectors: [
+                            "CVE-2024-5082 - RCE via malicious Maven artifact (Nexus 2.x up to 2.15.1)",
+                            "CVE-2024-5083 - Stored XSS via Maven artifact payloads",
+                            "CVE-2024-4956 - Path traversal (unauthenticated file disclosure, versions < 3.68.1)",
+                            "CVE-2024-5764 - Static hard-coded encryption passphrase (versions < 3.73.0)",
+                            "CVE-2020-10199 - JavaEL injection RCE",
+                            "CVE-2019-7238 - RCE in versions < 3.15.0",
+                            "CVE-2019-9629 - Default credentials (admin:admin123)",
+                            "CVE-2019-9630 - Unauthenticated read permissions on repositories",
                             "Default credentials (admin:admin123)",
-                            "Anonymous repository access",
+                            "Anonymous repository access misconfiguration",
                             "API token extraction",
-                            "CVE exploitation (RCE vulnerabilities)",
-                            "Malicious package upload",
-                            "Docker registry access",
-                            "NPM package hijacking",
-                            "Repository enumeration"
+                            "Malicious package upload for supply chain attacks",
+                            "Docker registry credential access",
+                            "NPM package hijacking and typosquatting",
+                            "Repository enumeration without authentication",
+                            "Private artifact exposure"
                         ],
                         defaultCreds: "admin:admin123"
                     },
@@ -951,22 +965,35 @@
                         name: "AWS Package Manager",
                         description: "AWS CodeArtifact for package management in AWS.",
                         attackVectors: [
-                            "IAM credential abuse",
-                            "Package repository enumeration",
-                            "Supply chain attacks via malicious packages",
-                            "AWS API key extraction",
-                            "Cross-account repository access"
+                            "IAM policy misconfiguration leading to privilege escalation",
+                            "IAM user permission to create new policy versions for admin access",
+                            "Compromised credentials with CodeArtifact access",
+                            "Package repository enumeration via API",
+                            "Supply chain attacks via malicious package injection",
+                            "AWS API key extraction (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)",
+                            "Cross-account repository access misconfigurations",
+                            "Resource-based policy exploitation",
+                            "Vulnerable dependency hosting without scanning",
+                            "EventBridge/Lambda bypass for malicious package upload"
                         ]
                     },
                     {
                         name: "Cloudsmith",
                         description: "Cloud-native package management. Multi-format support.",
                         attackVectors: [
-                            "API key extraction",
-                            "Repository enumeration",
-                            "Package upload for supply chain attacks",
-                            "Public repository exposure",
-                            "Webhook manipulation"
+                            "API key extraction from CI/CD pipelines",
+                            "Repository enumeration without authentication",
+                            "Package upload for supply chain attacks (npm, Docker, Python, Maven)",
+                            "Public repository exposure - check visibility settings",
+                            "Webhook manipulation for data exfiltration",
+                            "Malicious package upload (90+ missed CVEs in Docker containers)",
+                            "SBOM metadata-only scanning bypass",
+                            "Missing SAST/secrets detection in scans",
+                            "Security misconfiguration detection gaps",
+                            "CVE prioritization absence leading to alert fatigue",
+                            "npm credential harvesting (GITHUB_TOKEN, NPM_TOKEN)",
+                            "CI/CD workflow injection for credential exfiltration",
+                            "Self-propagating malware in packages (Shai-Hulud attacks)"
                         ]
                     }
                 ]
