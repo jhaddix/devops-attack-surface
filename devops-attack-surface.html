@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Attack Surface - Pentester's Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1976d2;
+            --primary-dark: #1565c0;
+            --secondary: #424242;
+            --accent: #ff5252;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --bg: #fafafa;
+            --card-bg: #ffffff;
+            --text: #212121;
+            --text-secondary: #757575;
+            --border: #e0e0e0;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 8px rgba(0,0,0,0.12);
+            --shadow-lg: 0 8px 16px rgba(0,0,0,0.15);
+        }
+
+        body {
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 24px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        .info-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .info-banner h2 {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .info-banner p {
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .credits {
+            background: rgba(255,255,255,0.15);
+            padding: 16px;
+            border-radius: 6px;
+            margin-top: 16px;
+            font-size: 13px;
+            border-left: 3px solid rgba(255,255,255,0.5);
+        }
+
+        .search-card {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 15px;
+            font-family: 'Roboto', sans-serif;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            outline: none;
+            transition: all 0.2s;
+            background: var(--bg);
+        }
+
+        .search-box:focus {
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+        }
+
+        .stats {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background: white;
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            transition: all 0.2s;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn:hover {
+            background: var(--bg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn.primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .btn.primary:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        .category {
+            background: white;
+            margin-bottom: 24px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .category.hidden {
+            display: none;
+        }
+
+        .category-header {
+            background: white;
+            padding: 20px 24px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s;
+        }
+
+        .category-header:hover {
+            background: var(--bg);
+        }
+
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .category-title h2 {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .category-icon {
+            font-size: 24px;
+        }
+
+        .tool-count {
+            background: var(--bg);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .toggle-icon {
+            transition: transform 0.3s;
+            font-size: 20px;
+            color: var(--text-secondary);
+        }
+
+        .category.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .category-content {
+            padding: 24px;
+            max-height: 5000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s;
+            background: var(--bg);
+        }
+
+        .category.collapsed .category-content {
+            max-height: 0;
+            padding: 0 24px;
+        }
+
+        .category-description {
+            margin-bottom: 24px;
+            padding: 16px;
+            background: white;
+            border-radius: 6px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            border-left: 3px solid var(--primary);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
+        }
+
+        .tool-card {
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tool-card.hidden {
+            display: none;
+        }
+
+        .tool-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .tool-card.expanded {
+            grid-column: 1 / -1;
+        }
+
+        .tool-name {
+            font-weight: 500;
+            font-size: 16px;
+            color: var(--text);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tool-name::before {
+            content: '';
+            width: 4px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .tool-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            display: none;
+            margin-bottom: 16px;
+        }
+
+        .tool-card.expanded .tool-description {
+            display: block;
+        }
+
+        .attack-vectors {
+            display: none;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .tool-card.expanded .attack-vectors {
+            display: block;
+        }
+
+        .attack-vectors h4 {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--accent);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .attack-vectors ul {
+            margin-left: 20px;
+            font-size: 13px;
+        }
+
+        .attack-vectors li {
+            margin: 8px 0;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .default-creds {
+            display: none;
+            background: #fff3e0;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-top: 12px;
+            font-size: 13px;
+            border-left: 3px solid var(--warning);
+        }
+
+        .tool-card.expanded .default-creds {
+            display: block;
+        }
+
+        .default-creds strong {
+            color: var(--text);
+        }
+
+        .warning-note {
+            background: #fff3cd;
+            border-left: 3px solid var(--warning);
+            padding: 16px 20px;
+            border-radius: 6px;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .warning-note strong {
+            color: var(--text);
+        }
+
+        .resources-section {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+
+        .resources-section h3 {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+
+        .resources-section h4 {
+            font-size: 15px;
+            font-weight: 500;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+
+        .resources-section ul {
+            margin-left: 20px;
+            font-size: 14px;
+        }
+
+        .resources-section li {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+
+        .resources-section p {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+        }
+
+        .resources-section a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .resources-section a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .footer {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            margin-top: 32px;
+            text-align: center;
+            color: var(--text-secondary);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--text);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s;
+            z-index: 1000;
+            font-size: 14px;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>🎯 DevOps Pipeline Attack Surface</h1>
+            <p>Interactive reference guide for penetration testing DevOps environments</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="info-banner">
+            <h2>Why Target DevOps?</h2>
+            <p>
+                DevOps platforms are target-rich environments with high-level permissions for managing credentials, creating infrastructure,
+                configuring systems, building code, and deploying applications to production. In a security landscape that places heavy scrutiny
+                on the endpoint, DevOps systems provide an opportunity to <strong>live off the land</strong> and escalate privileges while
+                maintaining operational security.
+            </p>
+            <div class="credits">
+                <strong>Credits:</strong> Big love to <strong>Tom and Colbert from Accenture (formerly FusionX)</strong> for chopping game about this! 🙌
+            </div>
+        </div>
+
+        <div class="warning-note">
+            <strong>⚠️ Authorized Security Testing Only</strong> - This guide is for authorized penetration testing and security assessments.
+            Attacking DevOps pipelines without authorization is illegal and can cause significant business disruption.
+        </div>
+
+        <div class="search-card">
+            <input type="text" id="searchBox" class="search-box" placeholder="🔍 Search tools, attack vectors, or categories...">
+            <div class="stats">
+                <span id="visibleCount">Loading...</span>
+                <span>•</span>
+                <span id="toolCount"></span>
+                <span>•</span>
+                <span>Click any tool card to expand attack details</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn primary" onclick="expandAllCategories()">Expand All Categories</button>
+            <button class="btn" onclick="collapseAllCategories()">Collapse All Categories</button>
+            <button class="btn primary" onclick="expandAllTools()">Expand All Tools</button>
+            <button class="btn" onclick="collapseAllTools()">Collapse All Tools</button>
+        </div>
+
+        <div id="categories"></div>
+
+        <div class="resources-section">
+            <h3>📖 Course Overview & Agenda</h3>
+
+            <h4>Day 1: Discovery & CI/CD Attacks</h4>
+            <ul>
+                <li>DevOps & CI/CD Pipeline Overview</li>
+                <li>Searching and Weaponizing Knowledge Bases</li>
+                <li>Source Code Abuse and Injection Attacks</li>
+                <li>Attacks Against Continuous Integration Services</li>
+                <li>Attacks Against Continuous Delivery Services</li>
+            </ul>
+
+            <h4>Day 2: Infrastructure & Operations</h4>
+            <ul>
+                <li>Configuration Management Attacks</li>
+                <li>Weaponizing Operations Consoles</li>
+                <li>Exploiting Monitoring Platform Access</li>
+                <li>Abusing Infrastructure-as-Code</li>
+                <li>Tactics Against Secrets Management Platforms</li>
+            </ul>
+
+            <h4>🎯 Key Takeaways</h4>
+            <ul>
+                <li><strong>New Attack Surface Perspective:</strong> Understanding DevOps & CI/CD pipelines from offensive and defensive viewpoints</li>
+                <li><strong>Targeted Reconnaissance:</strong> OPSEC-conscious privilege escalation, lateral movement, and RCE techniques</li>
+                <li><strong>Modern Red Teaming:</strong> No-install, browser-based attacks that focus on business logic abuse vs. implants/EDR bypasses</li>
+            </ul>
+
+            <h4>👥 Target Audience</h4>
+            <p><strong>Beginner/Intermediate Level</strong> - Offensive and defensive security practitioners:</p>
+            <ul style="columns: 2; -webkit-columns: 2; -moz-columns: 2;">
+                <li>Red Team Operators</li>
+                <li>Penetration Testers</li>
+                <li>Application Security Specialists</li>
+                <li>Incident Responders</li>
+                <li>SOC/SIEM Analysts</li>
+                <li>Threat Hunters</li>
+                <li>Software Engineers</li>
+                <li>SREs & Cloud Admins</li>
+            </ul>
+
+            <h4>📚 Additional Resources</h4>
+            <ul>
+                <li>🔗 <a href="https://owasp.org/www-project-devsecops-guideline/" target="_blank">OWASP DevSecOps Guidelines</a></li>
+                <li>🔗 <a href="https://github.com/TupleType/DevOops" target="_blank">DevOops - DevOps Security Testing Framework</a></li>
+                <li>🔗 <a href="https://www.cidersecurity.io/top-10-ci-cd-security-risks/" target="_blank">Top 10 CI/CD Security Risks</a></li>
+                <li>🔗 <a href="https://github.com/hahwul/DevSecOps" target="_blank">DevSecOps Resources Collection</a></li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p><strong>Purpose:</strong> Educational and authorized security testing</p>
+            <p style="margin-top: 8px;">Always obtain proper authorization before testing DevOps infrastructure</p>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        const devOpsTools = [
+            {
+                category: "Knowledge Bases",
+                icon: "📚",
+                description: "Documentation and knowledge management platforms often containing sensitive information, credentials, and architecture details.",
+                tools: [
+                    {
+                        name: "SharePoint",
+                        description: "Microsoft's enterprise content management platform. Often contains sensitive documentation, credentials in documents, and architecture diagrams.",
+                        attackVectors: [
+                            "Search for exposed credentials in documents",
+                            "Enumerate user lists via API",
+                            "Exploit CVEs (e.g., CVE-2019-0604 for RCE)",
+                            "Access control bypass via crafted URLs",
+                            "Extract metadata from documents",
+                            "Look for .aspx shells if write access obtained"
+                        ],
+                        defaultCreds: "Check for default admin accounts or service accounts"
+                    },
+                    {
+                        name: "Confluence",
+                        description: "Atlassian's wiki and collaboration platform. Treasure trove of architecture docs, passwords, and API keys.",
+                        attackVectors: [
+                            "Search for 'password', 'api key', 'secret', 'token' in content",
+                            "OGNL injection (CVE-2021-26084, CVE-2022-26134)",
+                            "Anonymous access misconfiguration",
+                            "Extract attachments with credentials",
+                            "Enumerate users and groups",
+                            "Webwork OGNL injection for RCE"
+                        ],
+                        defaultCreds: "admin:admin (old versions)"
+                    },
+                    {
+                        name: "MediaWiki",
+                        description: "Open-source wiki software. Can expose sensitive internal documentation.",
+                        attackVectors: [
+                            "Check Special:Version for software versions",
+                            "Enumerate users via API",
+                            "Search page history for removed secrets",
+                            "File upload restrictions bypass",
+                            "SQL injection in older versions",
+                            "Access restrictions bypass"
+                        ],
+                        defaultCreds: "Check for weak admin passwords"
+                    },
+                    {
+                        name: "DokuWiki",
+                        description: "Simple wiki system. Often misconfigured with public access.",
+                        attackVectors: [
+                            "Directory traversal vulnerabilities",
+                            "Arbitrary file disclosure",
+                            "Authentication bypass",
+                            "Check data/pages/ for raw wiki content",
+                            "ACL misconfiguration",
+                            "Plugin vulnerabilities"
+                        ],
+                        defaultCreds: "Initial setup may have weak passwords"
+                    },
+                    {
+                        name: "Notion",
+                        description: "Modern workspace and documentation tool. Cloud-based, often shared publicly.",
+                        attackVectors: [
+                            "Enumerate publicly shared pages",
+                            "Google dorking for exposed Notion pages",
+                            "API token extraction from integrations",
+                            "Check for overshared workspaces",
+                            "Leaked workspace URLs in GitHub"
+                        ]
+                    },
+                    {
+                        name: "TikiWiki",
+                        description: "Full-featured wiki and CMS. Complex with many features and attack surfaces.",
+                        attackVectors: [
+                            "File upload vulnerabilities",
+                            "SQL injection (historical issues)",
+                            "Authentication bypass",
+                            "XSS in various modules",
+                            "Shell upload via file gallery"
+                        ]
+                    },
+                    {
+                        name: "Wiki.js",
+                        description: "Modern, lightweight wiki built on Node.js. Growing in popularity.",
+                        attackVectors: [
+                            "GraphQL API enumeration",
+                            "JWT token manipulation",
+                            "Check for exposed GraphQL playground",
+                            "Authentication bypass via API",
+                            "File upload vulnerabilities"
+                        ],
+                        defaultCreds: "admin@example.com:admin (initial setup)"
+                    }
+                ]
+            },
+            {
+                category: "Dev & Project Management",
+                icon: "📋",
+                description: "Project tracking and management tools containing sprint info, user stories, and often credentials in tickets.",
+                tools: [
+                    {
+                        name: "Jira",
+                        description: "Atlassian's issue tracking and project management. Gold mine for credentials, API keys, and internal info.",
+                        attackVectors: [
+                            "Search for 'password', 'credentials', 'token', 'api key' in tickets",
+                            "User enumeration via REST API",
+                            "SSRF vulnerabilities (CVE-2019-8449)",
+                            "Information disclosure via /secure/Dashboard.jspa",
+                            "CVE exploitation (check for outdated versions)",
+                            "Extract attachments with secrets",
+                            "JQL injection for data extraction"
+                        ],
+                        defaultCreds: "admin:admin (fresh installs)"
+                    },
+                    {
+                        name: "Trello",
+                        description: "Kanban-style project management. Often has public boards with sensitive info.",
+                        attackVectors: [
+                            "Enumerate public boards via company name",
+                            "API key extraction from browser/mobile apps",
+                            "OAuth token theft",
+                            "Public board information disclosure",
+                            "Search for credentials in card descriptions",
+                            "Webhook manipulation"
+                        ]
+                    },
+                    {
+                        name: "Redmine",
+                        description: "Open-source project management. Can contain sensitive project data.",
+                        attackVectors: [
+                            "Default credentials on fresh installs",
+                            "CVE exploitation (various RCE and auth bypass)",
+                            "API key enumeration",
+                            "Repository browser for code access",
+                            "File upload vulnerabilities",
+                            "SQL injection in older versions"
+                        ],
+                        defaultCreds: "admin:admin"
+                    }
+                ]
+            },
+            {
+                category: "Source Code Management (SCM)",
+                icon: "🔀",
+                description: "Version control systems - the crown jewels. Source code, commit history, and often hardcoded secrets.",
+                tools: [
+                    {
+                        name: "Git",
+                        description: "Distributed version control. Exposed .git directories are a goldmine.",
+                        attackVectors: [
+                            "Exposed .git directories (/.git/)",
+                            "GitDumper / git-dumper for extraction",
+                            "Search commit history for secrets (git log -p)",
+                            "Check .git/config for remote URLs with credentials",
+                            "Extract credentials from reflog",
+                            "Search for removed secrets in history",
+                            "truffleHog / GitLeaks for secret scanning"
+                        ]
+                    },
+                    {
+                        name: "GitHub",
+                        description: "Cloud-based Git hosting. API access, actions, and secrets management.",
+                        attackVectors: [
+                            "GitHub dorking for exposed credentials",
+                            "Enumerate repositories via API",
+                            "GitHub Actions secrets extraction (if write access)",
+                            "Personal Access Token (PAT) abuse",
+                            "SSH key extraction from commits",
+                            "GitHub Pages misconfigurations",
+                            "OAuth app token theft",
+                            "Branch protection bypass",
+                            "Code search for API keys, passwords"
+                        ]
+                    },
+                    {
+                        name: "GitLab",
+                        description: "Self-hosted Git platform with CI/CD. Often contains sensitive CI variables.",
+                        attackVectors: [
+                            "CVE exploitation (RCE vulnerabilities common)",
+                            "CI/CD variable extraction",
+                            "API token enumeration",
+                            "Repository enumeration",
+                            "GitLab Runner token abuse",
+                            "SSRF via import features",
+                            "Arbitrary file read (CVE-2021-22205)",
+                            "Container registry access"
+                        ],
+                        defaultCreds: "root:password (initial setup)"
+                    },
+                    {
+                        name: "Bitbucket",
+                        description: "Atlassian's Git solution. Integrated with Jira and other Atlassian products.",
+                        attackVectors: [
+                            "CVE exploitation (various RCE)",
+                            "API key extraction",
+                            "Repository enumeration",
+                            "Pipeline variable extraction",
+                            "SSH key harvesting",
+                            "Webhook manipulation",
+                            "Branch permission bypass"
+                        ]
+                    },
+                    {
+                        name: "Subversion (SVN)",
+                        description: "Centralized version control. Less common but still used in legacy systems.",
+                        attackVectors: [
+                            "Exposed .svn directories",
+                            "SVN enumeration tools (svn-extractor)",
+                            "Unauthenticated repository access",
+                            "Commit log analysis for secrets",
+                            "WebDAV vulnerabilities if exposed"
+                        ]
+                    },
+                    {
+                        name: "CVS",
+                        description: "Legacy version control. Rarely seen but occasionally encountered.",
+                        attackVectors: [
+                            "Exposed CVS repositories",
+                            "Unauthenticated access",
+                            "CVS pserver vulnerabilities",
+                            "Historical data extraction"
+                        ]
+                    },
+                    {
+                        name: "Azure DevOps Server",
+                        description: "Microsoft's DevOps platform. Includes repos, pipelines, artifacts.",
+                        attackVectors: [
+                            "Personal Access Token (PAT) abuse",
+                            "Pipeline secrets extraction",
+                            "Service connection credentials",
+                            "API enumeration",
+                            "Build variable extraction",
+                            "Azure DevOps Services API abuse",
+                            "Repository enumeration"
+                        ]
+                    }
+                ]
+            },
+            {
+                category: "Repository Management",
+                icon: "📦",
+                description: "Artifact and package repositories. Can contain backdoored packages, credentials, and sensitive binaries.",
+                tools: [
+                    {
+                        name: "Artifactory",
+                        description: "JFrog's universal artifact repository. Stores builds, dependencies, Docker images.",
+                        attackVectors: [
+                            "Anonymous repository browsing",
+                            "API key extraction",
+                            "Default credentials (admin:password)",
+                            "CVE exploitation (various RCE)",
+                            "Docker registry credential theft",
+                            "Artifact upload for supply chain attacks",
+                            "Repository enumeration",
+                            "Backup file access (.backup files)"
+                        ],
+                        defaultCreds: "admin:password"
+                    },
+                    {
+                        name: "Nexus",
+                        description: "Sonatype's repository manager. Manages Maven, npm, Docker, and more.",
+                        attackVectors: [
+                            "Default credentials (admin:admin123)",
+                            "Anonymous repository access",
+                            "API token extraction",
+                            "CVE exploitation (RCE vulnerabilities)",
+                            "Malicious package upload",
+                            "Docker registry access",
+                            "NPM package hijacking",
+                            "Repository enumeration"
+                        ],
+                        defaultCreds: "admin:admin123"
+                    },
+                    {
+                        name: "AWS Package Manager",
+                        description: "AWS CodeArtifact for package management in AWS.",
+                        attackVectors: [
+                            "IAM credential abuse",
+                            "Package repository enumeration",
+                            "Supply chain attacks via malicious packages",
+                            "AWS API key extraction",
+                            "Cross-account repository access"
+                        ]
+                    },
+                    {
+                        name: "Cloudsmith",
+                        description: "Cloud-native package management. Multi-format support.",
+                        attackVectors: [
+                            "API key extraction",
+                            "Repository enumeration",
+                            "Package upload for supply chain attacks",
+                            "Public repository exposure",
+                            "Webhook manipulation"
+                        ]
+                    }
+                ]
+            },
+            {
+                category: "Build Servers",
+                icon: "🏗️",
+                description: "CI/CD build platforms. Critical targets - compromise here = code execution in production pipeline.",
+                tools: [
+                    {
+                        name: "Jenkins",
+                        description: "Most popular CI/CD server. Highly extensible, often misconfigured. High-value target.",
+                        attackVectors: [
+                            "Unauthenticated access (no security configured)",
+                            "Script console RCE (if authenticated)",
+                            "Groovy script injection",
+                            "Credentials plugin extraction",
+                            "Build job manipulation",
+                            "Pipeline code injection",
+                            "Plugin vulnerabilities (1000+ plugins)",
+                            "CVE exploitation (numerous RCE CVEs)",
+                            "Stored credentials in build configs",
+                            "Agent/node compromise"
+                        ],
+                        defaultCreds: "admin:admin or no auth"
+                    },
+                    {
+                        name: "CircleCI",
+                        description: "Cloud-based CI/CD. Environment variables often contain secrets.",
+                        attackVectors: [
+                            "Environment variable extraction via API",
+                            "API token abuse",
+                            "Context secrets extraction",
+                            "SSH key theft from builds",
+                            "Workflow manipulation",
+                            "Org-level token compromise",
+                            "Project-level secrets access"
+                        ]
+                    },
+                    {
+                        name: "GitHub Actions",
+                        description: "GitHub's native CI/CD. Secrets stored in repository or organization level.",
+                        attackVectors: [
+                            "Workflow injection via pull requests",
+                            "Secrets extraction from workflow runs",
+                            "Self-hosted runner compromise",
+                            "GITHUB_TOKEN abuse",
+                            "Action poisoning (malicious actions)",
+                            "Environment variable disclosure",
+                            "Pull request from fork to extract secrets",
+                            "Workflow file manipulation"
+                        ]
+                    },
+                    {
+                        name: "GitLab CI/CD",
+                        description: "GitLab's integrated CI/CD. Variables and runner tokens are prime targets.",
+                        attackVectors: [
+                            "CI/CD variable extraction",
+                            "Runner registration token abuse",
+                            "Pipeline injection",
+                            "Protected variable access",
+                            "Shared runner compromise",
+                            "Container registry credential theft",
+                            ".gitlab-ci.yml manipulation",
+                            "Job artifacts containing secrets"
+                        ]
+                    },
+                    {
+                        name: "TeamCity",
+                        description: "JetBrains CI/CD server. Often used in enterprise environments.",
+                        attackVectors: [
+                            "CVE exploitation (auth bypass, RCE)",
+                            "Build configuration credential theft",
+                            "Agent compromise",
+                            "Build step injection",
+                            "Server-wide settings access",
+                            "VCS root credentials",
+                            "Plugin vulnerabilities"
+                        ],
+                        defaultCreds: "Check for initial setup tokens"
+                    },
+                    {
+                        name: "Bamboo",
+                        description: "Atlassian's CI/CD server. Integrates with Jira and Bitbucket.",
+                        attackVectors: [
+                            "CVE exploitation",
+                            "Build plan manipulation",
+                            "Credentials extraction from plans",
+                            "Remote agent compromise",
+                            "Deployment project manipulation",
+                            "REST API abuse",
+                            "Variable extraction"
+                        ],
+                        defaultCreds: "admin:admin (initial)"
+                    }
+                ]
+            },
+            {
+                category: "Deployment Platforms",
+                icon: "🚀",
+                description: "Deployment and release management platforms. Production deployment credentials often stored here.",
+                tools: [
+                    {
+                        name: "Octopus Deploy",
+                        description: "Automated deployment and release management. Contains production credentials.",
+                        attackVectors: [
+                            "API key extraction",
+                            "Deployment target credential theft",
+                            "Library variable sets with secrets",
+                            "Certificate store access",
+                            "Project variable extraction",
+                            "Tenant variable access",
+                            "Deployment process manipulation",
+                            "Worker pool compromise"
+                        ],
+                        defaultCreds: "Admin account created during setup"
+                    },
+                    {
+                        name: "UrbanCode Deploy (UCD)",
+                        description: "IBM's application deployment automation. Enterprise deployment platform.",
+                        attackVectors: [
+                            "Authentication token theft",
+                            "Component process manipulation",
+                            "Environment property extraction",
+                            "Resource credential access",
+                            "Agent compromise",
+                            "Deployment script injection",
+                            "REST API enumeration"
+                        ]
+                    },
+                    {
+                        name: "Digital.ai",
+                        description: "DevOps platform (formerly XebiaLabs). Release orchestration and deployment.",
+                        attackVectors: [
+                            "API credential extraction",
+                            "Configuration item (CI) enumeration",
+                            "Deployment automation abuse",
+                            "Credential vault access",
+                            "Plugin vulnerabilities",
+                            "Release pipeline manipulation"
+                        ]
+                    },
+                    {
+                        name: "CircleCI Deploy",
+                        description: "CircleCI deployment features. Context and environment secrets.",
+                        attackVectors: [
+                            "Context secrets extraction",
+                            "Deployment key theft",
+                            "Workflow manipulation for deployments",
+                            "Environment variable disclosure",
+                            "API token abuse"
+                        ]
+                    },
+                    {
+                        name: "Codefresh",
+                        description: "GitOps and CI/CD platform. Kubernetes-native deployments.",
+                        attackVectors: [
+                            "Pipeline variable extraction",
+                            "Shared configuration access",
+                            "Kubernetes context credentials",
+                            "Docker registry credentials",
+                            "Git integration token theft",
+                            "Helm repository credentials"
+                        ]
+                    }
+                ]
+            },
+            {
+                category: "Configuration Management",
+                icon: "⚙️",
+                description: "Infrastructure as Code and config management. Contains server credentials, SSH keys, and secrets.",
+                tools: [
+                    {
+                        name: "Ansible",
+                        description: "Agentless automation. Playbooks and vaults contain sensitive credentials.",
+                        attackVectors: [
+                            "Ansible Vault cracking (if weak passwords)",
+                            "Playbook extraction for hardcoded credentials",
+                            "SSH private key discovery",
+                            "Inventory file enumeration (hosts/credentials)",
+                            "Tower/AWX API credential theft",
+                            "Become password extraction",
+                            "Galaxy role poisoning",
+                            "Unencrypted variable files"
+                        ]
+                    },
+                    {
+                        name: "Chef",
+                        description: "Configuration management using Ruby. Cookbooks may contain secrets.",
+                        attackVectors: [
+                            "Chef Server API credential theft",
+                            "Cookbook secret extraction",
+                            "Data bag decryption (encrypted data bags)",
+                            "Knife configuration files (~/.chef/knife.rb)",
+                            "Node attribute enumeration",
+                            "Chef Vault key compromise",
+                            "Validator key theft (validator.pem)"
+                        ]
+                    },
+                    {
+                        name: "Puppet",
+                        description: "Infrastructure automation platform. Masters control configuration of nodes.",
+                        attackVectors: [
+                            "Puppet manifest credential extraction",
+                            "Hiera data backend secrets",
+                            "Certificate authority key theft",
+                            "PuppetDB API enumeration",
+                            "Node fact extraction",
+                            "Puppet Server compromise",
+                            "Module code injection"
+                        ]
+                    },
+                    {
+                        name: "Salt",
+                        description: "Event-driven automation. Master-minion architecture.",
+                        attackVectors: [
+                            "Salt Master API authentication bypass",
+                            "Pillar data extraction (secrets storage)",
+                            "State file manipulation",
+                            "CVE exploitation (CVE-2020-11651/11652 - auth bypass/RCE)",
+                            "Minion key compromise",
+                            "Event bus manipulation",
+                            "Grain data extraction"
+                        ]
+                    },
+                    {
+                        name: "CFEngine",
+                        description: "Lightweight config management. Less common but still used.",
+                        attackVectors: [
+                            "Policy file enumeration",
+                            "CFEngine Hub API access",
+                            "Promise credential extraction",
+                            "Bootstrap key compromise",
+                            "Hub database access"
+                        ]
+                    },
+                    {
+                        name: "PowerShell DSC",
+                        description: "Windows-native configuration management. Credentials often stored in MOF files.",
+                        attackVectors: [
+                            "MOF file credential extraction",
+                            "Configuration data credential theft",
+                            "Certificate-based credential decryption",
+                            "Pull server compromise",
+                            "DSC resource credential access",
+                            "Encrypted credentials with known certificates"
+                        ]
+                    }
+                ]
+            },
+            {
+                category: "Operations & Monitoring",
+                icon: "📊",
+                description: "Monitoring and logging platforms. Can reveal system architecture, vulnerabilities, and sometimes credentials in logs.",
+                tools: [
+                    {
+                        name: "Splunk",
+                        description: "Enterprise logging and SIEM. Logs may contain credentials and sensitive data.",
+                        attackVectors: [
+                            "Default credentials (admin:changeme)",
+                            "Search for credentials in logs",
+                            "API token extraction",
+                            "Forwarder compromise for data injection",
+                            "App installation for code execution",
+                            "Search query injection",
+                            "Password extraction from indexed data",
+                            "CVE exploitation"
+                        ],
+                        defaultCreds: "admin:changeme"
+                    },
+                    {
+                        name: "Elastic (ELK)",
+                        description: "Elasticsearch, Logstash, Kibana. Logs and metrics, often sensitive data.",
+                        attackVectors: [
+                            "Unauthenticated Elasticsearch access",
+                            "Index enumeration for sensitive data",
+                            "API credential extraction",
+                            "Kibana CVE exploitation",
+                            "Log injection attacks",
+                            "Credential disclosure in logs",
+                            "Search query for passwords/tokens",
+                            "Logstash config file secrets"
+                        ],
+                        defaultCreds: "elastic:changeme (X-Pack)"
+                    },
+                    {
+                        name: "Grafana",
+                        description: "Metrics visualization. Data source credentials and API keys.",
+                        attackVectors: [
+                            "Default credentials (admin:admin)",
+                            "CVE exploitation (path traversal, auth bypass)",
+                            "Data source credential extraction",
+                            "API key theft",
+                            "Dashboard enumeration",
+                            "Plugin vulnerabilities",
+                            "Unauthenticated access misconfiguration"
+                        ],
+                        defaultCreds: "admin:admin"
+                    },
+                    {
+                        name: "Graylog",
+                        description: "Log management platform. Centralized logging with potential sensitive data.",
+                        attackVectors: [
+                            "Default credentials (admin:admin)",
+                            "API token extraction",
+                            "Search for credentials in logs",
+                            "Input source manipulation",
+                            "Collector credential theft",
+                            "CVE exploitation",
+                            "Stream access for sensitive logs"
+                        ],
+                        defaultCreds: "admin:admin"
+                    },
+                    {
+                        name: "Nagios",
+                        description: "Infrastructure monitoring. Configuration files may have credentials.",
+                        attackVectors: [
+                            "Default credentials (nagiosadmin:nagios)",
+                            "Configuration file credential extraction",
+                            "Command injection via check commands",
+                            "CVE exploitation (various RCE)",
+                            "Plugin vulnerabilities",
+                            "SNMP community string extraction",
+                            "NSClient++ exploitation (Windows)"
+                        ],
+                        defaultCreds: "nagiosadmin:nagios"
+                    },
+                    {
+                        name: "StackStorm",
+                        description: "Event-driven automation. Workflows and actions can contain credentials.",
+                        attackVectors: [
+                            "API key extraction",
+                            "Action credential theft",
+                            "Workflow manipulation",
+                            "Key-value store secrets access",
+                            "Pack installation for code execution",
+                            "Rule injection",
+                            "Sensor manipulation"
+                        ]
+                    }
+                ]
+            },
+            {
+                category: "Infrastructure as Code (IaC)",
+                icon: "🏗️",
+                description: "IaC platforms define cloud infrastructure. State files and configs often contain sensitive credentials and architecture.",
+                tools: [
+                    {
+                        name: "Terraform",
+                        description: "Popular IaC tool. State files are gold mines with credentials and secrets.",
+                        attackVectors: [
+                            "Terraform state file extraction (terraform.tfstate)",
+                            "State file contains cloud credentials, DB passwords, keys",
+                            "Backend credential theft (S3, Azure Storage, etc.)",
+                            "Provider credential extraction",
+                            "Variable file secrets (.tfvars)",
+                            "Remote state backend compromise",
+                            "Plan file analysis for sensitive data",
+                            "Module source manipulation"
+                        ]
+                    },
+                    {
+                        name: "AWS CloudFormation",
+                        description: "AWS native IaC. Templates and stacks can reveal architecture and secrets.",
+                        attackVectors: [
+                            "Template parameter secrets",
+                            "Stack output sensitive data",
+                            "IAM role credential extraction",
+                            "Resource property secrets",
+                            "Change set analysis for configurations",
+                            "Stack policy bypass",
+                            "Export value enumeration"
+                        ]
+                    },
+                    {
+                        name: "Azure Resource Manager (ARM)",
+                        description: "Azure IaC templates. Can contain secrets and credential references.",
+                        attackVectors: [
+                            "Template parameter secrets",
+                            "Deployment history sensitive data",
+                            "Key Vault reference extraction",
+                            "Managed identity permissions analysis",
+                            "Deployment credential theft",
+                            "Template function abuse"
+                        ]
+                    },
+                    {
+                        name: "Google Deployment Manager",
+                        description: "GCP infrastructure deployment. Templates can expose credentials.",
+                        attackVectors: [
+                            "Template secret extraction",
+                            "Service account credential access",
+                            "Deployment manifest analysis",
+                            "Runtime configurator secrets",
+                            "Import file credential theft"
+                        ]
+                    }
+                ]
+            },
+            {
+                category: "Secrets Managers",
+                icon: "🔐",
+                description: "Centralized secrets management. The ultimate prize - compromise here = access to all stored credentials.",
+                tools: [
+                    {
+                        name: "HashiCorp Vault",
+                        description: "Leading secrets management platform. Secures, stores, and controls access to tokens, passwords, certificates.",
+                        attackVectors: [
+                            "Unseal key theft (if accessible)",
+                            "Root token compromise",
+                            "AppRole credentials extraction",
+                            "Token with excessive permissions",
+                            "Vault agent credential theft",
+                            "Transit engine key compromise",
+                            "Database credential leasing",
+                            "KV secret enumeration",
+                            "Policy exploitation for privilege escalation",
+                            "Unsealed Vault in dev mode"
+                        ]
+                    },
+                    {
+                        name: "Azure Key Vault",
+                        description: "Azure's secrets, keys, and certificate management. Cloud-native secrets storage.",
+                        attackVectors: [
+                            "Managed identity with Key Vault access",
+                            "Service principal credential theft",
+                            "Access policy misconfiguration",
+                            "Soft-deleted secrets recovery",
+                            "Key/secret version enumeration",
+                            "Certificate with private key export",
+                            "RBAC privilege escalation",
+                            "Key Vault firewall bypass"
+                        ]
+                    },
+                    {
+                        name: "AWS Secrets Manager",
+                        description: "AWS secrets rotation and management. Integrated with AWS services.",
+                        attackVectors: [
+                            "IAM role with GetSecretValue permission",
+                            "Lambda rotation function compromise",
+                            "Resource-based policy exploitation",
+                            "Deleted secret recovery (recovery window)",
+                            "Secret version enumeration",
+                            "Cross-account secret access",
+                            "VPC endpoint policy bypass"
+                        ]
+                    },
+                    {
+                        name: "GCP Secret Manager",
+                        description: "Google Cloud secrets storage. Versioned secret management.",
+                        attackVectors: [
+                            "Service account with Secret Manager access",
+                            "IAM permission escalation",
+                            "Secret version enumeration",
+                            "Deleted secret recovery",
+                            "Organization policy bypass",
+                            "Workload identity exploitation"
+                        ]
+                    },
+                    {
+                        name: "Thycotic Secret Server",
+                        description: "Enterprise privileged access management. On-prem and cloud secrets.",
+                        attackVectors: [
+                            "API credential theft",
+                            "SQL database backend access",
+                            "Encryption key compromise",
+                            "User impersonation",
+                            "Secret template abuse",
+                            "Launcher credential extraction",
+                            "Web password filler exploitation"
+                        ]
+                    },
+                    {
+                        name: "Bitwarden Secrets Manager",
+                        description: "Open-source secrets management. Self-hosted or cloud.",
+                        attackVectors: [
+                            "Master password compromise",
+                            "API access token theft",
+                            "Self-hosted server database access",
+                            "Organization vault access",
+                            "CLI tool credential extraction",
+                            "Sync encryption key compromise"
+                        ]
+                    },
+                    {
+                        name: "CyberArk",
+                        description: "Enterprise PAM solution. Privileged account and session management.",
+                        attackVectors: [
+                            "Vault credential theft",
+                            "CPM (Central Policy Manager) compromise",
+                            "PSM (Privileged Session Manager) session hijacking",
+                            "PVWA (Password Vault Web Access) exploitation",
+                            "Safe credential extraction",
+                            "API credential abuse",
+                            "Credential provider file theft"
+                        ]
+                    },
+                    {
+                        name: "Akeyless",
+                        description: "SaaS-first secrets management. Cloud-native with zero-knowledge architecture.",
+                        attackVectors: [
+                            "Access token compromise",
+                            "API key theft",
+                            "Gateway credential extraction",
+                            "Auth method abuse",
+                            "Role permission escalation",
+                            "Target item enumeration"
+                        ]
+                    },
+                    {
+                        name: "GitGuardian",
+                        description: "Secrets detection and remediation. Monitors for exposed secrets.",
+                        attackVectors: [
+                            "API token extraction",
+                            "Incident data access",
+                            "Integration credential theft",
+                            "Detected secret enumeration (if compromised)",
+                            "Webhook manipulation"
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        function renderCategories() {
+            const container = document.getElementById('categories');
+            container.innerHTML = '';
+            let totalTools = 0;
+
+            devOpsTools.forEach((cat, catIndex) => {
+                totalTools += cat.tools.length;
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'category';
+                categoryDiv.dataset.category = cat.category;
+
+                const toolsHTML = cat.tools.map(tool => {
+                    const attackVectorsHTML = tool.attackVectors ? `
+                        <div class="attack-vectors">
+                            <h4>🎯 Attack Vectors</h4>
+                            <ul>
+                                ${tool.attackVectors.map(v => `<li>${v}</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : '';
+
+                    const defaultCredsHTML = tool.defaultCreds ? `
+                        <div class="default-creds">
+                            <strong>🔑 Default Credentials:</strong> ${tool.defaultCreds}
+                        </div>
+                    ` : '';
+
+                    return `
+                        <div class="tool-card" data-tool="${tool.name.toLowerCase()}" onclick="toggleTool(this)">
+                            <div class="tool-name">${tool.name}</div>
+                            <div class="tool-description">${tool.description || ''}</div>
+                            ${attackVectorsHTML}
+                            ${defaultCredsHTML}
+                        </div>
+                    `;
+                }).join('');
+
+                categoryDiv.innerHTML = `
+                    <div class="category-header" onclick="toggleCategory(${catIndex})">
+                        <div class="category-title">
+                            <span class="category-icon">${cat.icon}</span>
+                            <h2>${cat.category}</h2>
+                            <span class="tool-count">${cat.tools.length} tools</span>
+                        </div>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="category-content">
+                        <div class="category-description">${cat.description}</div>
+                        <div class="tools-grid">
+                            ${toolsHTML}
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(categoryDiv);
+            });
+
+            document.getElementById('toolCount').textContent = `${totalTools} tools`;
+            updateStats();
+        }
+
+        function toggleCategory(index) {
+            const categories = document.querySelectorAll('.category');
+            categories[index].classList.toggle('collapsed');
+        }
+
+        function toggleTool(element) {
+            element.classList.toggle('expanded');
+        }
+
+        function expandAllCategories() {
+            document.querySelectorAll('.category').forEach(cat => {
+                cat.classList.remove('collapsed');
+            });
+        }
+
+        function collapseAllCategories() {
+            document.querySelectorAll('.category').forEach(cat => {
+                cat.classList.add('collapsed');
+            });
+        }
+
+        function expandAllTools() {
+            document.querySelectorAll('.tool-card').forEach(tool => {
+                tool.classList.add('expanded');
+            });
+        }
+
+        function collapseAllTools() {
+            document.querySelectorAll('.tool-card').forEach(tool => {
+                tool.classList.remove('expanded');
+            });
+        }
+
+        function search(query) {
+            query = query.toLowerCase().trim();
+            let visibleTools = 0;
+
+            document.querySelectorAll('.category').forEach(category => {
+                let categoryHasVisible = false;
+
+                category.querySelectorAll('.tool-card').forEach(tool => {
+                    const toolText = tool.textContent.toLowerCase();
+                    const toolName = tool.dataset.tool;
+
+                    if (!query || toolText.includes(query) || toolName.includes(query)) {
+                        tool.classList.remove('hidden');
+                        categoryHasVisible = true;
+                        visibleTools++;
+                    } else {
+                        tool.classList.add('hidden');
+                    }
+                });
+
+                if (categoryHasVisible) {
+                    category.classList.remove('hidden');
+                    category.classList.remove('collapsed');
+                } else {
+                    category.classList.add('hidden');
+                }
+            });
+
+            const totalTools = devOpsTools.reduce((sum, cat) => sum + cat.tools.length, 0);
+            document.getElementById('visibleCount').textContent =
+                `Showing ${visibleTools} of ${totalTools} tools`;
+        }
+
+        function updateStats() {
+            const totalTools = devOpsTools.reduce((sum, cat) => sum + cat.tools.length, 0);
+            document.getElementById('visibleCount').textContent = `${totalTools} tools available`;
+        }
+
+        document.getElementById('searchBox').addEventListener('input', (e) => {
+            search(e.target.value);
+        });
+
+        // Initialize
+        renderCategories();
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'f') {
+                e.preventDefault();
+                document.getElementById('searchBox').focus();
+            }
+            if (e.key === 'Escape') {
+                document.getElementById('searchBox').value = '';
+                search('');
+            }
+        });
+    </script>
+</body>
+</html>
